@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+ <string name="app_name">XamagonDrop.Droid</string>
+  <string name="title_activity_aractive">ARActive</string>
+  <string name="main_title_text">Xamagon Drop!</string>
+  <string name="main_basic_button_text">Drop Anchors, ARrrr</string>
+  <string name="main_basic_details_text">Anchors Away!</string>
+  <string name="main_nearby_button_text">Nearby</string>
+  <string name="main_nearby_details_text">Create 3 anchors and locate the last. Then, find the other 2 anchors using a query for nearby
+anchors.</string>
+  <string name="main_shared_button_text">Drop Anchors, ARrrr</string>
+  <string name="main_shared_details_text">Anchors Away!</string>
+  <string name="shared_title_text"></string>
+  <string name="shared_enter_anchor_text">Enter Anchor Number:</string>
+  <string name="shared_anchor_number_text">Anchor Number</string>
+  <string name="back_button_text">Back</string>
+  <string name="create_button_text">Create</string>
+  <string name="locate_button_text">Locate</string>
+</resources>

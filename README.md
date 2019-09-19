@@ -17,5 +17,3 @@ On iOS -> Enter the ID for the Anchor you are close to, move the device around t
 Known Issues :
 - Crash when trying to locate multiple anchors within same session -> current fix: hit back and click the "Start Here" Button again
 - Anchor takes a while to be located -> try walking around the area, moving the device around and it will be located. I promise. 
-
-Code coming soon!
