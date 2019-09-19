@@ -20,6 +20,7 @@ namespace SharingService.Data
         }
 
         public string AnchorKey { get; set; }
+        public string AnchorDescription { get; set; }
     }
 
 
@@ -130,12 +131,48 @@ namespace SharingService.Data
             return (await this.GetLastAnchorAsync())?.AnchorKey;
         }
 
+
+        /// <summary>
+        /// Gets all anchor asynchronously.
+        /// </summary>
+        /// <returns>The anchor.</returns>
+        public async Task<List<AnchorCacheEntity>> GetAnchorsAsync()
+        {
+            await this.InitializeAsync();
+
+            List<AnchorCacheEntity> results = new List<AnchorCacheEntity>();
+            TableQuery<AnchorCacheEntity> tableQuery = new TableQuery<AnchorCacheEntity>();
+            TableQuerySegment<AnchorCacheEntity> previousSegment = null;
+            while (previousSegment == null || previousSegment.ContinuationToken != null)
+            {
+                TableQuerySegment<AnchorCacheEntity> currentSegment = await this.dbCache.ExecuteQuerySegmentedAsync<AnchorCacheEntity>(tableQuery, previousSegment?.ContinuationToken);
+                previousSegment = currentSegment;
+                results.AddRange(previousSegment.Results);
+            }
+
+            return results.OrderBy(x => x.Timestamp).DefaultIfEmpty(null).ToList<AnchorCacheEntity>();
+        }
+
+
+        public async Task<List<string>> GetAllAnchorsList()
+        {
+            var result = await this.GetAnchorsAsync();
+            List<string> anchorDescription = new List<string>();
+
+            foreach(var item in result)
+            {
+                anchorDescription.Add(item.AnchorDescription);
+            }
+
+            return anchorDescription;
+        }
+
         /// <summary>
         /// Sets the anchor key asynchronously.
         /// </summary>
         /// <param name="anchorKey">The anchor key.</param>
         /// <returns>An <see cref="Task{System.Int64}" /> representing the anchor identifier.</returns>
-        public async Task<long> SetAnchorKeyAsync(string anchorKey)
+        public async Task<long> SetAnchorKeyAsync(string anchorKey, string anchorDescription)
         {
             await this.InitializeAsync();
 
@@ -156,7 +193,8 @@ namespace SharingService.Data
 
             AnchorCacheEntity anchorEntity = new AnchorCacheEntity(newAnchorNumberIndex, CosmosDbCache.partitionSize)
             {
-                AnchorKey = anchorKey
+                AnchorKey = anchorKey,
+                AnchorDescription = anchorDescription
             };
 
             await this.dbCache.ExecuteAsync(TableOperation.Insert(anchorEntity));

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SharingService.Data
@@ -30,10 +31,16 @@ namespace SharingService.Data
         Task<string> GetLastAnchorKeyAsync();
 
         /// <summary>
+        /// Gets list of all anchors
+        /// </summary>
+        /// <returns>The list of all anchors; otherwise, null.</returns>
+        Task<List<string>> GetAllAnchorsList();
+
+        /// <summary>
         /// Sets the anchor key asynchronously.
         /// </summary>
         /// <param name="anchorKey">The anchor key.</param>
         /// <returns>An <see cref="Task{System.Int64}"/> representing the anchor identifier.</returns>
-        Task<long> SetAnchorKeyAsync(string anchorKey);
+        Task<long> SetAnchorKeyAsync(string anchorKey, string anchorDescription);
     }
 }

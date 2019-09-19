@@ -37,6 +37,11 @@ namespace SharingService.Data
             return Task.FromResult(this.memoryCache.TryGetValue(anchorId, out _));
         }
 
+        public Task<List<string>> GetAllAnchorsList()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the anchor key asynchronously.
         /// </summary>
@@ -84,6 +89,11 @@ namespace SharingService.Data
             this.memoryCache.Set(newAnchorNumberIndex, anchorKey, entryCacheOptions);
 
             return Task.FromResult(newAnchorNumberIndex);
+        }
+
+        public Task<long> SetAnchorKeyAsync(string anchorKey, string anchorDescription)
+        {
+            throw new NotImplementedException();
         }
     }
 }

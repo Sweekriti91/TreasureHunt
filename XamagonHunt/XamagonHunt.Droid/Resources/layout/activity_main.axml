@@ -33,6 +33,17 @@
         android:layout_height="wrap_content"
         android:text="@string/main_basic_details_text"
         android:textAlignment="center"
-        android:textSize="18sp"
-        android:layout_weight="1"/>
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/anchorlistitem" 
+        android:text="..."
+        android:layout_marginTop="15dp"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
+
 </LinearLayout>

@@ -42,6 +42,10 @@ namespace XamagonDrop.Droid
 
         private Button createButton;
 
+        private EditText anchorNumInput;
+
+        private TextView editTextInfo;
+
         private DemoStep currentStep = DemoStep.Start;
 
         private Button exitButton;
@@ -116,7 +120,9 @@ namespace XamagonDrop.Droid
             this.textView.Visibility = ViewStates.Visible;
             this.createButton = (Button)this.FindViewById(Resource.Id.createButton);
             this.createButton.Click += this.OnCreateButtonClicked;
-       
+            this.anchorNumInput = (EditText)this.FindViewById(Resource.Id.anchorNumText);
+            this.editTextInfo = (TextView)this.FindViewById(Resource.Id.editTextInfo);
+
             this.EnableCorrectUIControls();
 
             Scene scene = this.sceneView.Scene;
@@ -302,27 +308,37 @@ namespace XamagonDrop.Droid
                 case DemoStep.Start:
                     this.textView.Visibility = ViewStates.Visible;
                     this.createButton.Visibility = ViewStates.Visible;
+                    this.editTextInfo.Visibility = ViewStates.Visible;
+                    this.anchorNumInput.Visibility = ViewStates.Visible;
                     this.SupportActionBar.Hide();
                     break;
 
                 case DemoStep.CreateAnchor:
                     this.textView.Visibility = ViewStates.Visible;
                     this.createButton.Visibility = ViewStates.Gone;
+                    this.editTextInfo.Visibility = ViewStates.Gone;
+                    this.anchorNumInput.Visibility = ViewStates.Gone;
                     break;
 
                 case DemoStep.LocateAnchor:
                     this.textView.Visibility = ViewStates.Visible;
                     this.createButton.Visibility = ViewStates.Gone;
+                    this.editTextInfo.Visibility = ViewStates.Gone;
+                    this.anchorNumInput.Visibility = ViewStates.Gone;
                     break;
 
                 case DemoStep.SavingAnchor:
                     this.textView.Visibility = ViewStates.Visible;
                     this.createButton.Visibility = ViewStates.Gone;
+                    this.editTextInfo.Visibility = ViewStates.Gone;
+                    this.anchorNumInput.Visibility = ViewStates.Gone;
                     break;
 
                 case DemoStep.EnterAnchorNumber:
                     this.textView.Visibility = ViewStates.Visible;
                     this.createButton.Visibility = ViewStates.Gone;
+                    this.editTextInfo.Visibility = ViewStates.Gone;
+                    this.anchorNumInput.Visibility = ViewStates.Gone;
                     break;
             }
         }
@@ -371,7 +387,7 @@ namespace XamagonDrop.Droid
 
                         Log.Debug("ASADemo", "recording anchor with web service");
                         Log.Debug("ASADemo", "anchorId: " + anchorId);
-                        SendAnchorResponse response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId);
+                        SendAnchorResponse response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId, anchorNumInput.Text);
                         this.AnchorPosted(response.AnchorNumber);
                     }
                     catch (CloudSpatialException ex)

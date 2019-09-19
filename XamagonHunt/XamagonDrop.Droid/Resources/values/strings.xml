@@ -11,8 +11,8 @@ anchors.</string>
   <string name="main_shared_button_text">Drop Anchors, ARrrr</string>
   <string name="main_shared_details_text">Anchors Away!</string>
   <string name="shared_title_text"></string>
-  <string name="shared_enter_anchor_text">Enter Anchor Number:</string>
-  <string name="shared_anchor_number_text">Anchor Number</string>
+  <string name="shared_enter_anchor_text">Enter Anchor Description:</string>
+  <string name="shared_anchor_number_text">Anchor Description</string>
   <string name="back_button_text">Back</string>
   <string name="create_button_text">Create</string>
   <string name="locate_button_text">Locate</string>

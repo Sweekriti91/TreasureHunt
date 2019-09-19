@@ -231,7 +231,7 @@ namespace XamagonHunt.iOS
 
             try
             {
-                response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId);
+                response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId, "testiOS");
             }
             catch (Exception ex)
             {

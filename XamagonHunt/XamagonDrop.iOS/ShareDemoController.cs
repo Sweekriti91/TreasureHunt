@@ -11,11 +11,14 @@ namespace XamagonDrop.iOS
     public class ShareDemoController : DemoControllerBase
     {
         private readonly string anchorId = string.Empty; //for searching for cloudAnchor
+        private string anchorDesc = string.Empty;
         private readonly AnchorSharingServiceClient anchorSharingServiceClient; //cloud saving and retreiving client
 
         public string mainLabelText = string.Empty;
         private readonly UILabel mainLabel = new UILabel();
         private readonly UIButton createButton = new UIButton(UIButtonType.System);
+        private readonly UILabel anchorIdLabel = new UILabel();
+        private readonly UITextField anchorDescription = new UITextField();
 
         public ShareDemoController()
         {
@@ -47,9 +50,26 @@ namespace XamagonDrop.iOS
             this.mainLabel.TextColor = UIColor.Yellow;
             this.mainLabel.Frame = new CGRect(10, 150, this.View.Frame.Width - 20, 40);
 
+            anchorIdLabel.Text = "Enter Anchor Description:";
+            anchorIdLabel.BackgroundColor = UIColor.LightGray;
+            anchorIdLabel.TextAlignment = UITextAlignment.Left;
+            anchorIdLabel.TextColor = UIColor.White;
+            anchorIdLabel.Frame = new CGRect(10, 150, View.Frame.Width - 20, 40);
+            anchorIdLabel.Hidden = false;
+
+            anchorDescription.Frame = new CGRect(10, 200, View.Frame.Width - 20, 44);
+            anchorDescription.TextAlignment = UITextAlignment.Left;
+            anchorDescription.MinimumFontSize = 17f;
+            anchorDescription.AdjustsFontSizeToFitWidth = true;
+            anchorDescription.ReturnKeyType = UIReturnKeyType.Done;
+            anchorDescription.BackgroundColor = UIColor.White;
+            anchorDescription.KeyboardType = UIKeyboardType.Default;
+            anchorDescription.Hidden = false;
 
             this.View.AddSubview(this.mainLabel);
             this.View.AddSubview(this.createButton);
+            this.View.AddSubview(this.anchorIdLabel);
+            this.View.AddSubview(this.anchorDescription);
         }
 
         private void CreateButtonTap()
@@ -59,9 +79,12 @@ namespace XamagonDrop.iOS
             this.currentlyPlacingAnchor = true;
             this.saveCount = 0;
             this.createButton.Hidden = true;
+            anchorIdLabel.Hidden = true;
+            anchorDescription.Hidden = true;
             this.StartSession();
 
             this.UpdateMainStatusTitle("Tap on the screen to Create an Anchor");
+            this.getTextValue();
         }
 
         public override void MoveToNextStepAfterCreateCloudAnchor()
@@ -88,6 +111,14 @@ namespace XamagonDrop.iOS
         public override void UpdateMainStatusTitle(string title)
         {
             this.InvokeOnMainThread(() => this.mainLabel.Text = title);
+        }
+
+        public void getTextValue()
+        {
+            this.InvokeOnMainThread(() =>
+            {
+                anchorDesc = anchorDescription.Text;
+            });
         }
 
         public override void HideMainStatus()
@@ -128,7 +159,7 @@ namespace XamagonDrop.iOS
 
             try
             {
-                response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId);
+                response = await this.anchorSharingServiceClient.SendAnchorIdAsync(anchorId, anchorDesc);
             }
             catch (Exception ex)
             {

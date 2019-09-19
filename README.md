@@ -1,13 +1,11 @@
 # TreasureHunt
 
-LIST OF ANCHORS :
-
 Join in the fun here! (ALPHA VERSION)
 Droid : https://aka.ms/xamagondroid
 iOS : https://aka.ms/xamagonios
 
 
-On App Launch, click the "Start here" Button. 
+On App Launch, click the "List of Anchors? Click Me" to get list of anchor numbers and location details. Then, click  on "Start here" Button. 
 
 On Android -> Move the device around (as the gif suggests) and hit the locate button -> enter the ID for the Anchor you are close to, move the device around that area and wait for the status to say, "Anchor Located!"
 

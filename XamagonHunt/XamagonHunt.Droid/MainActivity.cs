@@ -7,6 +7,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using XamagonHunt.Common;
 
 namespace XamagonHunt.Droid
 {
@@ -14,6 +15,8 @@ namespace XamagonHunt.Droid
     public class MainActivity : AppCompatActivity
     {
         private const double MIN_OPENGL_VERSION = 3.0;
+        private AnchorSharingServiceClient anchorSharingServiceClient; //cloud saving and retreiving client
+        TextView listofAnchors;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -32,13 +35,27 @@ namespace XamagonHunt.Droid
 
             TextView links = this.FindViewById<TextView>(Resource.Id.textView3);
             links.Click += OnLinksClick;
+
+            listofAnchors = this.FindViewById<TextView>(Resource.Id.anchorlistitem);
         }
 
-        public void OnLinksClick(object sender, EventArgs e)
+        public async void OnLinksClick(object sender, EventArgs e)
         {
-            var uri = Android.Net.Uri.Parse("https://github.com/Sweekriti91/TreasureHunt/blob/master/README.md");
-            var intent = new Intent(Intent.ActionView, uri);
-            StartActivity(intent);
+            anchorSharingServiceClient = new AnchorSharingServiceClient(AccountDetails.AnchorSharingServiceUrl);
+            var test = await anchorSharingServiceClient.RetrieveAllAnchors();
+            var listItemString = string.Empty;
+            int count = 0;
+            foreach(var item in test)
+            {
+                count++;
+                char[] MyChar = { '[',' ',']' ,'"'};
+                string NewString = item.Trim(MyChar);
+                listItemString += count.ToString() + ". " + NewString + "\n";
+            }
+            this.RunOnUiThread(() =>
+            {
+                listofAnchors.Text = listItemString;
+            });
         }
 
         public void OnBasicDemoClick(object sender, EventArgs e)

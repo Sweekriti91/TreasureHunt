@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -18,12 +20,13 @@ namespace XamagonHunt.Common
             this.endpointUrl = endpointUrl;
         }
 
-        public async Task<SendAnchorResponse> SendAnchorIdAsync(string anchorId)
+        public async Task<SendAnchorResponse> SendAnchorIdAsync(string anchorId, string anchorDescription)
         {
             using (HttpClient client = new HttpClient())
             {
                 StringContent content = new StringContent(anchorId);
-                HttpResponseMessage response = await client.PostAsync(this.endpointUrl, content);
+                var newendpointUrl = endpointUrl + "?anchorDescription=" + anchorDescription;
+                HttpResponseMessage response = await client.PostAsync(newendpointUrl, content);
 
                 response.EnsureSuccessStatusCode();
 
@@ -55,6 +58,31 @@ namespace XamagonHunt.Common
             }
 
             return RetrieveAnchorResponse.NotFound;
+        }
+
+        public async Task<List<string>> RetrieveAllAnchors()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage httpResponse = await client.GetAsync($"{this.endpointUrl}/all");
+
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        string anchorList = await httpResponse.Content.ReadAsStringAsync();
+                        var resultList = anchorList.Split(',').ToList();
+                        
+                        return resultList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
+            return null;
         }
     }
 }

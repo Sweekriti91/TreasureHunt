@@ -54,9 +54,24 @@ namespace SharingService.Controllers
             return anchorKey;
         }
 
+        // GET api/anchors/all
+        [HttpGet("all")]
+        public async Task<ActionResult<List<string>>> GetAllAsync()
+        {
+            // Get the last anchor
+            var results = await this.anchorKeyCache.GetAllAnchorsList();
+
+            if (results == null)
+            {
+                return null;
+            }
+
+            return results;
+        }
+
         // POST api/anchors
         [HttpPost]
-        public async Task<ActionResult<long>> PostAsync()
+        public async Task<ActionResult<long>> PostAsync(string anchorDescription)
         {
             string anchorKey;
             using (StreamReader reader = new StreamReader(this.Request.Body, Encoding.UTF8))
@@ -70,7 +85,7 @@ namespace SharingService.Controllers
             }
 
             // Set the key and return the anchor number
-            return await this.anchorKeyCache.SetAnchorKeyAsync(anchorKey);
+            return await this.anchorKeyCache.SetAnchorKeyAsync(anchorKey, anchorDescription);
         }
     }
 }

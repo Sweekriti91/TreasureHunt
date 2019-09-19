@@ -1,6 +1,7 @@
 ﻿using CoreGraphics;
 using Foundation;
 using UIKit;
+using XamagonHunt.Common;
 
 namespace XamagonHunt.iOS
 {
@@ -16,6 +17,7 @@ namespace XamagonHunt.iOS
 
             this.View.BackgroundColor = UIColor.White;
             this.Title = "Xamagon Hunt!";
+            var anchorSharingServiceClient = new AnchorSharingServiceClient(AccountDetails.AnchorSharingServiceUrl);
 
             UIButton shareDemoButton = new UIButton(UIButtonType.System)
             {
@@ -33,8 +35,28 @@ namespace XamagonHunt.iOS
                 Frame = new CGRect(10, 200, this.View.Frame.Width - 20, 44),
             };
 
-            UITapGestureRecognizer labelTap = new UITapGestureRecognizer(() => {
-                UIApplication.SharedApplication.OpenUrl(new NSUrl("https://github.com/Sweekriti91/TreasureHunt/blob/master/README.md"));
+            UILabel listOfAnchors = new UILabel()
+            {
+                Text = "...",
+                TextAlignment = UITextAlignment.Natural,
+                Frame = new CGRect(10, 230, this.View.Frame.Width - 20, 300),
+                //LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 10
+            };
+
+            UITapGestureRecognizer labelTap = new UITapGestureRecognizer(async () => {
+                var test = await anchorSharingServiceClient.RetrieveAllAnchors();
+                var listItemString = string.Empty;
+                int count = 0;
+                foreach (var item in test)
+                {
+                    count++;
+                    char[] MyChar = { '[', ' ', ']', '"' };
+                    string NewString = item.Trim(MyChar);
+                    listItemString += count.ToString() + ". " + NewString + "\n";
+                }
+
+                listOfAnchors.Text = listItemString;
             });
 
             shareDemoLabel.UserInteractionEnabled = true;
@@ -45,6 +67,7 @@ namespace XamagonHunt.iOS
                 this.NavigationController.PushViewController(new ShareDemoController(), true);
             };
             this.View.AddSubview(shareDemoLabel);
+            this.View.AddSubview(listOfAnchors);
         }
     }
 }
